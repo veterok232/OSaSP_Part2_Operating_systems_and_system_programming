@@ -1,7 +1,18 @@
 #pragma once
 
+#include "resource.h"
+
+#pragma once
+
 #include <windows.h>
 #include <iostream>
+
+#include <windows.h>
+#include <iostream>
+#include <comdef.h>
+#include <stdio.h>
+#include <locale.h>
+#include <TlHelp32.h>
 
 const DWORD MAX_KEY_NAME_LENGTH = 4096;
 const DWORD KEY_FLAGS_COUNT = 3;
@@ -11,6 +22,7 @@ typedef struct _KEYFLAG {
 	LPSTR lpsFlagValue;
 } KEYFLAG;
 
+LPCSTR CommandController(char** argv, int argc);
 bool OpenRegKey(HKEY hKeyRoot, LPCWSTR lpSubKey, REGSAM samDesired, PHKEY phkResult);
 bool CreateRegKey(HKEY hKeyRoot, LPCWSTR lpSubKey);
 bool CloseRegKey(HKEY hKey);

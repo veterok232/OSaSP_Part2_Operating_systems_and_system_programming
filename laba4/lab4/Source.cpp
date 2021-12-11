@@ -1,6 +1,6 @@
-#include <windows.h>
-#include <iostream>
-#include "RegistryModifyier.h"
+
+#include "framework.h"
+#include "lab4.h"
 
 
 //Create a new key in registry
@@ -44,7 +44,7 @@ bool CloseRegKey(HKEY hKey)
 //Set one of key parameters in registry
 bool SetRegKey(HKEY hKeyRoot, LPCWSTR lpSubKey, LPCWSTR lpParamName, DWORD dwParamType, LPCVOID lpData, DWORD cbData)
 {
-	if ((lpParamName == NULL)|| (lpSubKey == NULL) || (lpData == NULL))
+	if ((lpParamName == NULL) || (lpSubKey == NULL) || (lpData == NULL))
 	{
 		return false;
 	}
@@ -138,7 +138,7 @@ LPWSTR CreateFullName(LPWSTR lpsKeyPath, LPWSTR lpsSubKeyName)
 			wcscat_s(newKeyPath, newPathLength + 1, lpsSubKeyName);
 		}
 	}
-	
+
 	return newKeyPath;
 }
 
@@ -218,9 +218,9 @@ LPWSTR* SearchRecursive(HKEY hKeyRoot, LPCWSTR lpsKeyPath, DWORD* lpdwResultCoun
 
 		if (lpsSubresult != NULL)
 		{
-			lpsBuffer = AddElementsToLPWSTRArray(lpsGeneralSubresult, 
-				dwGeneralSubresultCount, 
-				lpsSubresult, 
+			lpsBuffer = AddElementsToLPWSTRArray(lpsGeneralSubresult,
+				dwGeneralSubresultCount,
+				lpsSubresult,
 				dwSubresultCount);
 
 			if (lpsBuffer != NULL)
@@ -256,7 +256,7 @@ LPWSTR* SearchKeyInList(LPWSTR* lpsKeyNamesList, DWORD dwKeyNamesCount, LPWSTR l
 	}
 
 	DWORD dwResultCount = 0;
-	LPWSTR* lpsResult = (LPWSTR*)calloc(dwResultCount, sizeof(LPWSTR)), *lpsBuffer;
+	LPWSTR* lpsResult = (LPWSTR*)calloc(dwResultCount, sizeof(LPWSTR)), * lpsBuffer;
 	WCHAR* lpsTemp;
 
 	if (lpsResult != NULL)
@@ -292,15 +292,15 @@ LPWSTR* SearchKey(HKEY hKey, LPCWSTR lpsSearchedKey, DWORD* lpdwFoundKeysCount)
 
 	DWORD dwSearchResultCount = 0;
 	LPWSTR* lpsAllKeyNamesList = SearchRecursive(hKey, L"", &dwSearchResultCount);
-	
+
 	if (lpsAllKeyNamesList == NULL)
 	{
 		return NULL;
 	}
-	
-	LPWSTR* lpsFoundKeyNamesList = SearchKeyInList(lpsAllKeyNamesList, 
-		dwSearchResultCount, 
-		const_cast<LPWSTR>(lpsSearchedKey), 
+
+	LPWSTR* lpsFoundKeyNamesList = SearchKeyInList(lpsAllKeyNamesList,
+		dwSearchResultCount,
+		const_cast<LPWSTR>(lpsSearchedKey),
 		&dwSearchResultCount);
 
 	*lpdwFoundKeysCount = dwSearchResultCount;
@@ -339,7 +339,7 @@ LPSTR ExecuteRegExe(WCHAR* lpsCommand)
 		siConsole.hStdError = hWritePipe;
 		siConsole.hStdInput = hReadPipe;
 		siConsole.dwFlags |= STARTF_USESTDHANDLES;
-		
+
 		// Create the child process. 
 		if (CreateProcess(NULL, lpsCommand, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &siConsole, &piInfo))
 		{
@@ -393,7 +393,7 @@ LPWSTR CreateFlagsQuery(LPCWSTR lpsKeyRoot, LPCWSTR lpsSubkeyPath)
 	DWORD dwQueryLength = lstrlen(lpsKey) + lstrlen(L"REG FLAGS  QUERY");
 	LPWSTR lpsResult = (LPWSTR)calloc(dwQueryLength + 1, sizeof(WCHAR));
 	swprintf(lpsResult, dwQueryLength + 1, L"REG FLAGS %s QUERY", lpsKey);
-	
+
 	return lpsResult;
 }
 
